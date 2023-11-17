@@ -1,0 +1,235 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To DO application</title>
+    <style>
+        body {
+            background-color: rgb(7, 96, 96);
+            height: 90vh;
+            font-size: 20px;
+            font-weight: 900;
+            word-spacing: 8px;
+            color: rgb(195, 232, 175);
+        }
+
+        header {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin: 50px;
+        }
+
+
+        #Title {
+            width: 280px;
+            height: 25px;
+        }
+
+        input[type="text"],
+        textarea {
+            border: none;
+            outline: none;
+            border-bottom: 4px solid #030000;
+            font-size: medium;
+            color: rgb(243, 246, 243);
+            background: none;
+        }
+
+        textarea {
+            font-size: 18px;
+        }
+
+        .todoList {
+            margin-top: 50px;
+        }
+
+        thead td {
+            padding-left: 55px;
+            padding-right: 55px;
+            color: rgb(71, 6, 6);
+            font-weight: 900;
+            border-bottom: 2px solid black;
+        }
+
+        tbody td {
+            padding-left: 55px;
+            padding-right: 55px;
+            color: rgb(175, 163, 230);
+            font-weight: normal;
+        }
+
+        #desc {
+            margin-top: 500px;
+        }
+
+        #additem,
+        #delete {
+            padding: 4px;
+            margin-top: 10px;
+            font-size: 15px;
+            border-radius: 6px;
+            background-color: rgb(133, 104, 120);
+            border: 4px solid rgb(123, 183, 33);
+            color: rgb(138, 181, 221);
+            cursor: pointer;
+        }
+
+        #clearlist {
+            padding: 12px 22px;
+            margin-top: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            background-color: rgb(52, 32, 43);
+            border: 4px solid rgb(202, 219, 175);
+            color: rgb(88, 159, 226);
+            cursor: pointer;
+
+        }
+
+        span {
+
+            text-align: center;
+            display: block;
+        }
+
+        #additem:hover,
+        #delete:hover {
+            scale: 1.2;
+            transition: 300ms;
+            background-color: rgb(21, 21, 185);
+            color: aqua;
+            border: 2px solid blanchedalmond;
+
+        }
+
+        #clearlist:hover {
+            scale: 1.2;
+            transition: 300ms;
+            background-color: rgb(84, 86, 84);
+            color: rgb(218, 143, 210);
+            border: 4px solid rgb(225, 175, 101);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>TO DO LIST APP</header>
+
+    <div class="container">
+        <div class="input">
+            <label for="title">TITLE</label><br>
+            <input type="text" id="title" style="margin-bottom: 20px;"><br>
+            <label id="desc" for="description">Description</label><br>
+            <textarea name="description" id="description" required cols="28" rows="5"></textarea><br>
+            <button id="additem">Add Item</button>
+        </div>
+
+        <div class="todoList">
+
+            <table>
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Title</td>
+                        <td>Description</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody id="t-body">
+
+                </tbody>
+
+            </table>
+            <span><button id="clearlist">Clear List</button></span>
+        </div>
+    </div>
+
+    <!-- ======================javascript======================= -->
+    <script>
+        const addbtn = document.getElementById("additem");
+        const clearlistbtn = document.getElementById("clearlist");
+        
+        let serealnumber = 1;
+        let tablecontent = '';
+        let Arrayrow = []
+ 
+        addbtn.addEventListener("click", function () {
+            const description = document.getElementById("description").value;
+            const title = document.getElementById("title").value;
+            const TableBody = document.getElementById("t-body")
+
+            tablecontent = '';
+            
+            tablecontent = ` 
+                    <tr>
+                        <th>${serealnumber}</th>
+                        <td>${title}</td>
+                        <td>${description}</td>
+                        <td>
+                            <button id="delete" onclick= "deletebtn(${serealnumber})">Delete</button>
+                        </td>
+                    </tr> `;
+
+
+
+            TableBody.innerHTML += tablecontent;
+
+            document.getElementById("description").value = '';
+            document.getElementById("title").value = '';
+            Arrayrow[serealnumber] = tablecontent;
+            serealnumber++;
+
+        
+        });
+
+        clearlistbtn.addEventListener("click", function () {
+            let clearcontent = document.getElementById("t-body");
+            if (clearcontent.innerHTML === '') {
+                alert(" Empty List ! Please Add TO DO List Item.");
+            } else {
+                alert("Are you sure you want to clear the TO DO List?");
+                clearcontent.innerHTML = '';
+                Arrayrow = []
+                serealnumber = 1; 
+            }
+
+        }); 
+
+<!-- ==================== FOR DELETION ======================= -->
+
+        function deletebtn(index) {
+
+             
+            Arrayrow[index] = undefined;
+
+            
+              RefreshList(index);
+                    
+        }
+        function RefreshList(index) {
+            const TableBody = document.getElementById("t-body");
+            TableBody.innerHTML = '';
+            for (let i = 0; i < Arrayrow.length; i++) {
+                if (Arrayrow[i] !== undefined) {
+                    TableBody.innerHTML += Arrayrow[i];
+                    
+                     
+                }    
+            } 
+            // serealnumber = 1   
+        }
+
+
+    </script>
+
+</body> 
+</html>
